@@ -58,7 +58,7 @@ public class FileHandler {
             return;
         }
 
-        String header = "Vards | Uzvards | Epasts | PerKods | RegDatums | RegLaiks";
+        String header = "Vards | Uzvards | Epasts | PersonasKods | Registracijas Datums | Regegistracijas Laiks";
         System.out.println(header);
         System.out.println("-".repeat(header.length()));
 
