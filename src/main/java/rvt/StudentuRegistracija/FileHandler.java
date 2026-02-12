@@ -25,7 +25,7 @@ public class FileHandler {
                     parametrs[0],
                     parametrs[1],
                     parametrs[2],
-                    Integer.parseInt(parametrs[3]),
+                    parametrs[3],
                     LocalDate.parse(parametrs[4]),
                     parametrs[5]
                 );
@@ -39,7 +39,7 @@ public class FileHandler {
         }
     }
 
-    public void register(String Vards, String Uzvards, String Epasts, int PerKods, LocalDate RegDatums, String RegLaiks) {
+    public void register(String Vards, String Uzvards, String Epasts, String PerKods, LocalDate RegDatums, String RegLaiks) {
         Students students = new Students(Vards, Uzvards, Epasts, PerKods, RegDatums, RegLaiks);
         list.add(students);
         try (FileWriter writer = new FileWriter(this.filePath)) {
@@ -58,18 +58,59 @@ public class FileHandler {
             return;
         }
 
-        String header = "Vards | Uzvards | Epasts | PersonasKods | Registracijas Datums | Regegistracijas Laiks";
-        System.out.println(header);
-        System.out.println("-".repeat(header.length()));
+        String[] headers = new String[] {
+            "No.",
+            "Name",
+            "Surname",
+            "Email",
+            "Personal Code",
+            "Registration Date",
+            "Registration Time"
+        };
 
-        for (Students s : list) {
-            String[] parts = s.toString().split(", ");
-            System.out.println(String.join(" | ", parts));
+        ArrayList<String[]> rows = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            Students s = list.get(i);
+            String[] parts = s.toString().split(",\\s*");
+            String[] row = new String[headers.length];
+            row[0] = String.valueOf(i + 1);
+            for (int c = 1; c < headers.length; c++) {
+                row[c] = (c - 1 < parts.length) ? parts[c - 1] : "";
+            }
+            rows.add(row);
+        }
+
+        int[] widths = new int[headers.length];
+        for (int c = 0; c < headers.length; c++) widths[c] = headers[c].length();
+        for (String[] row : rows) {
+            for (int c = 0; c < row.length; c++) {
+                if (row[c] != null) widths[c] = Math.max(widths[c], row[c].length());
+            }
+        }
+
+        StringBuilder fmt = new StringBuilder();
+        for (int c = 0; c < headers.length; c++) {
+            fmt.append("%-").append(widths[c]).append("s");
+            if (c < headers.length - 1) fmt.append(" | ");
+        }
+        String format = fmt.toString();
+
+        System.out.printf(format + "%n", (Object[]) headers);
+
+        StringBuilder sep = new StringBuilder();
+        for (int c = 0; c < headers.length; c++) {
+            sep.append("-".repeat(widths[c]));
+            if (c < headers.length - 1) sep.append("-+-");
+        }
+        System.out.println(sep.toString());
+
+        for (String[] row : rows) {
+            System.out.printf(format + "%n", (Object[]) row);
         }
     }
 
-    public void remove(int PerKods) {
-        boolean removed = list.removeIf(elem -> elem.getPerKods() == PerKods);
+    public void remove(String PerKods) {
+        boolean removed = list.removeIf(elem -> elem.getPerKods().equals(PerKods));
         if (removed) {
             try (FileWriter writer = new FileWriter(this.filePath)) {
                 for (Students stud : list) {
@@ -81,9 +122,11 @@ public class FileHandler {
         }
     }
 
-    public void edit(int PerKods) {
+    public void edit(String PerKods) {
+        InputChecker input = new InputChecker();
+
         for (Students elem : list) {
-            if (elem.getPerKods() == PerKods) {
+            if (elem.getPerKods().equals(PerKods)) {
                 System.out.println(
                     "What you want to edit?\nV - vards U - uzvards E - epasts P - Personas kods D - Registracijas dautms T - Registracijas laiks"
                 );
@@ -91,32 +134,32 @@ public class FileHandler {
                 switch(user_input) {
                     case "V" -> {
                         System.out.println("Enter new name:");
-                        user_input = reader.nextLine().trim();
+                        user_input = input.inputName();
                         elem.chanheVards(user_input);
                     }
                     case "U" -> {
-                        System.out.println("Enter new name:");
-                        user_input = reader.nextLine().trim();
+                        System.out.println("Enter new surname:");
+                        user_input = input.inputSurname();
                         elem.chanheUzvards(user_input);
                     }
                     case "E" -> {
                         System.out.println("Enter new e-pasts:");
-                        user_input = reader.nextLine().trim();
+                        user_input = input.inputEmail();
                         elem.chanheEpasts(user_input);
                     }
                     case "P" -> {
                         System.out.println("Enter new personal code:");
-                        user_input = reader.nextLine().trim();
-                        elem.chanhePerKods(Integer.parseInt(user_input));
+                        user_input = input.inputPersonalCode();
+                        elem.chanhePerKods(user_input);
                     }
                     case "D" -> {
                         System.out.println("Enter new registration date:");
-                        user_input = reader.nextLine().trim();
+                        user_input = input.inputRegisterDate();
                         elem.chanheDatums(LocalDate.parse(user_input));
                     }
                     case "T" -> {
                         System.out.println("Enter new registration time:");
-                        user_input = reader.nextLine().trim();
+                        user_input = input.inputRegisterTime();
                         elem.chanheLaiks(user_input);
                     }
                 }

@@ -2,16 +2,13 @@ package rvt.StudentuRegistracija;
 
 import java.time.LocalDate;
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class CLI {
     String user_input;
     Scanner scanner;
     FileHandler fileHandler;
+    InputChecker input = new InputChecker();
     Boolean program_status = true;
-    Matcher matcher;
-    Pattern pattern;
 
     public CLI(FileHandler file, Scanner scanner) {
         this.fileHandler = file;
@@ -19,29 +16,28 @@ public class CLI {
     }
 
     public void start() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+        System.out.printf("Welcome to student registration system!\nAvailable commands: register, show, remove, edit, exit\n");
         while (program_status) { 
             System.out.printf("Command: ");
             try {
             switch (this.user_input = scanner.nextLine().toLowerCase().trim()) {
                 case "register":
-                    System.out.printf("Registration form:\nName: ");
-                    String Vards = scanner.nextLine();
-                    System.out.printf("Surname: ");
-                    String Uzvards = scanner.nextLine();
-                    System.out.printf("E-pasts: ");
-                    String Epasts = scanner.nextLine();
-                    System.out.printf("Personas kods: ");
-                    int PerKods = Integer.parseInt(scanner.nextLine());
-                    System.out.printf("Reg Datums: ");
-                    String RegDatums = scanner.nextLine();;
-                    System.out.printf("Reg laiks: ");
-                    String RegLaiks = scanner.nextLine();;
+                    System.out.printf("Registration form:\n");
 
-                    fileHandler.register(Vards, Uzvards, Epasts, PerKods, LocalDate.parse(RegDatums), RegLaiks);
+                    String name = input.inputName();
+                    String surname = input.inputSurname();
+                    String Email = input.inputEmail();
+                    String PersonalCode = input.inputPersonalCode();
+                    String RegisterDate = input.inputRegisterDate();
+                    String RegisterTime = input.inputRegisterTime();
+
+                    fileHandler.register(name, surname, Email, PersonalCode, LocalDate.parse(RegisterDate), RegisterTime);
                     break;
                 case "remove":
                     System.out.printf("Enter personas kods.\nWhich one is removed? ");
-                    fileHandler.remove(Integer.parseInt(this.user_input = scanner.nextLine()));
+                    fileHandler.remove(this.user_input = scanner.nextLine());
                     break;
                 case "exit":
                     this.program_status = false;
@@ -51,7 +47,7 @@ public class CLI {
                     break;
                 case "edit":
                     System.out.println("Enter PerKods: ");
-                    fileHandler.edit(Integer.parseInt(this.user_input = scanner.nextLine()));
+                    fileHandler.edit(this.user_input = scanner.nextLine());
             }
         } catch(Exception e) {
             System.out.println("ERROR! Try again.");

@@ -6,11 +6,11 @@ public class Students {
     private String Vards;
     private String Uzvards;
     private String Epasts;
-    private int PerKods;
+    private String PerKods;
     private LocalDate RegDatums;
     private String RegLaiks;
 
-    public Students(String Vards, String Uzvards, String Epasts, int PerKods, LocalDate RegDatums, String RegLaiks) {
+    public Students(String Vards, String Uzvards, String Epasts, String PerKods, LocalDate RegDatums, String RegLaiks) {
         this.Vards = Vards;
         this.Uzvards = Uzvards;
         this.Epasts = Epasts;
@@ -31,7 +31,7 @@ public class Students {
         this.Epasts = jaunsEpasts;
     }
 
-    public void chanhePerKods(int jaunsPerKods) {
+    public void chanhePerKods(String jaunsPerKods) {
         this.PerKods = jaunsPerKods;
     }
 
@@ -43,7 +43,7 @@ public class Students {
         this.RegLaiks = jaunsLaiks;
     }
 
-    public int getPerKods() {
+    public String getPerKods() {
         return this.PerKods;
     }
     
