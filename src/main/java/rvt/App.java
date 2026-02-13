@@ -2,8 +2,8 @@ package rvt;
 
 import java.util.Scanner;
 
-import rvt.StudentuRegistracija.CLI;
-import rvt.StudentuRegistracija.FileHandler;
+import StudentuRegistracija.CLI;
+import StudentuRegistracija.FileHandler;
 
 public class App {
     public static void main(String[] args) {

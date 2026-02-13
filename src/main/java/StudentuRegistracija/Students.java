@@ -1,4 +1,4 @@
-package rvt.StudentuRegistracija;
+package StudentuRegistracija;
 
 import java.time.LocalDate;
 
