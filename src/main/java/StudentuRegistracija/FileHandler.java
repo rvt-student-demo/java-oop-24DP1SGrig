@@ -107,6 +107,7 @@ public class FileHandler {
         for (String[] row : rows) {
             System.out.printf(format + "%n", (Object[]) row);
         }
+        System.out.println(sep.toString());
     }
 
     public void remove(String PerKods) {
@@ -149,7 +150,7 @@ public class FileHandler {
                     }
                     case "P" -> {
                         System.out.println("Enter new personal code:");
-                        user_input = input.inputPersonalCode();
+                        user_input = input.inputPersonalCode(list);
                         elem.chanhePerKods(user_input);
                     }
                     case "D" -> {

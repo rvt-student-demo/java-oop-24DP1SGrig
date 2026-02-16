@@ -16,8 +16,7 @@ public class CLI {
     }
 
     public void start() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+
         System.out.printf("Welcome to student registration system!\nAvailable commands: register, show, remove, edit, exit\n");
         while (program_status) { 
             System.out.printf("Command: ");
@@ -29,7 +28,7 @@ public class CLI {
                     String name = input.inputName();
                     String surname = input.inputSurname();
                     String Email = input.inputEmail();
-                    String PersonalCode = input.inputPersonalCode();
+                    String PersonalCode = input.inputPersonalCode(fileHandler.list);
                     String RegisterDate = input.inputRegisterDate();
                     String RegisterTime = input.inputRegisterTime();
 

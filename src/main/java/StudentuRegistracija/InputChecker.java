@@ -3,6 +3,7 @@ package StudentuRegistracija;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -69,20 +70,34 @@ public class InputChecker {
         return email;
     }
 
-    public String inputPersonalCode() {
-        System.out.printf("Personal Code(e.g. 123456-78901): ");
-        String code = scanner.nextLine().trim();
+    public String inputPersonalCode(ArrayList<Students> lists) {
+        while (true) {
+            System.out.printf("Personal Code(e.g. 123456-78901): ");
+            String code = scanner.nextLine().trim();
 
-        this.matcher = Pattern.compile("^\\d{6}-\\d{5}$").matcher(code);
+            this.pattern = Pattern.compile("^\\d{6}-\\d{5}$");
+            this.matcher = pattern.matcher(code);
 
-        while (!matcher.matches()) { 
-            System.out.println("Error: Invalid format. Use XXXXXX-XXXXX (11 digits and a dash).");
-            
-            System.out.print("Personal Code: ");
-            code = scanner.nextLine().trim();
-            matcher.reset(code);
+            if (!matcher.matches()) {
+                System.out.println("Error: Invalid format. Use XXXXXX-XXXXX (11 digits and a dash).");
+                continue;
+            }
+
+            boolean exists = false;
+            for (Students s : lists) {
+                if (s.getPerKods().equals(code)) {
+                    exists = true;
+                    break;
+                }
+            }
+
+            if (exists) {
+                System.out.println("Error: Personal code already exists. Please enter a unique code.");
+                continue;
+            }
+
+            return code;
         }
-        return code;
     }
 
     public String inputRegisterDate() {
