@@ -3,6 +3,8 @@ package StudentuRegistracija;
 import java.time.LocalDate;
 import java.util.Scanner;
 
+import rvt.utils.ConsoleColors;
+
 public class CLI {
     String user_input;
     Scanner scanner;
@@ -17,7 +19,7 @@ public class CLI {
 
     public void start() {
 
-        System.out.printf("Welcome to student registration system!\nAvailable commands: register, show, remove, edit, exit\n");
+        System.out.printf(ConsoleColors.GREEN + "Welcome to student registration system!\nAvailable commands: register, show, remove, edit, exit\n" + ConsoleColors.RESET);
         while (program_status) { 
             System.out.printf("Command: ");
             try {

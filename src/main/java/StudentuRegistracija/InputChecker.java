@@ -8,6 +8,8 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import rvt.utils.ConsoleColors;
+
 public class InputChecker {
     Scanner scanner = new Scanner(System.in);
     Matcher matcher;
@@ -25,7 +27,7 @@ public class InputChecker {
         this.matcher = pattern.matcher(name);
 
         while (matcher.find() || name.length() < 3) {
-            System.out.println("In name can't be special symbols or digits. Try again.");
+            System.out.println(ConsoleColors.RED + "In name can't be special symbols or digits. Try again." + ConsoleColors.RESET);
             System.out.print("Name: ");
             
             name = scanner.nextLine().trim();
@@ -43,7 +45,7 @@ public class InputChecker {
         this.matcher = pattern.matcher(surname);
 
         while (matcher.find() || surname.length() < 3) { 
-            System.out.println("Invalid surname! It must be at least 3 chars long and contain no digits/special symbols. Try again.");
+            System.out.println(ConsoleColors.RED + "Invalid surname! It must be at least 3 chars long and contain no digits/special symbols. Try again." + ConsoleColors.RESET);
             System.out.print("Surname: ");
             
             surname = scanner.nextLine().trim();
@@ -60,7 +62,7 @@ public class InputChecker {
         this.matcher = Pattern.compile("^[a-zA-Z0-9]+@[a-zA-Z0-9]+\\.(com|org|lv)$").matcher(email);
 
         while (!matcher.matches() || email.length() < 5) { 
-            System.out.println("Error: Invalid format, unsupported domain (.com, .org, .lv), or too short.");
+            System.out.println(ConsoleColors.RED + "Error: Invalid format, unsupported domain (.com, .org, .lv), or too short." + ConsoleColors.RESET);
             
             System.out.printf("Email: ");
             email = scanner.nextLine().trim();
@@ -79,7 +81,7 @@ public class InputChecker {
             this.matcher = pattern.matcher(code);
 
             if (!matcher.matches()) {
-                System.out.println("Error: Invalid format. Use XXXXXX-XXXXX (11 digits and a dash).");
+                System.out.println(ConsoleColors.RED + "Error: Invalid format. Use XXXXXX-XXXXX (11 digits and a dash)." + ConsoleColors.RESET);
                 continue;
             }
 
@@ -92,7 +94,7 @@ public class InputChecker {
             }
 
             if (exists) {
-                System.out.println("Error: Personal code already exists. Please enter a unique code.");
+                System.out.println(ConsoleColors.RED + "Error: Personal code already exists. Please enter a unique code." + ConsoleColors.RESET);
                 continue;
             }
 
@@ -111,7 +113,7 @@ public class InputChecker {
                 LocalDate.parse(date); 
                 return date; 
             } catch (DateTimeParseException e) {
-                System.out.println("Error: Invalid date or format. Please use YYYY-MM-DD.");
+                System.out.println(ConsoleColors.RED + "Error: Invalid date or format. Please use YYYY-MM-DD." + ConsoleColors.RESET);
             }
         }
     }
@@ -126,7 +128,7 @@ public class InputChecker {
                 LocalTime.parse(time); 
                 return time; 
             } catch (DateTimeParseException e) {
-                System.out.println("Error: Invalid time. Use HH:mm (e.g., 08:30 or 23:15).");
+                System.out.println(ConsoleColors.RED + "Error: Invalid time. Use HH:mm (e.g., 08:30 or 23:15)." + ConsoleColors.RESET);
             }
         }
     }

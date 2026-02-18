@@ -91,23 +91,30 @@ public class FileHandler {
         StringBuilder fmt = new StringBuilder();
         for (int c = 0; c < headers.length; c++) {
             fmt.append("%-").append(widths[c]).append("s");
-            if (c < headers.length - 1) fmt.append(" | ");
+            if (c < headers.length - 1) fmt.append(" ║ ");
         }
         String format = fmt.toString();
-
+        
         System.out.printf(format + "%n", (Object[]) headers);
 
         StringBuilder sep = new StringBuilder();
         for (int c = 0; c < headers.length; c++) {
-            sep.append("-".repeat(widths[c]));
-            if (c < headers.length - 1) sep.append("-+-");
+            sep.append("═".repeat(widths[c]));
+            if (c < headers.length - 1) sep.append("═╬═");
         }
+        
         System.out.println(sep.toString());
-
+        
         for (String[] row : rows) {
             System.out.printf(format + "%n", (Object[]) row);
         }
-        System.out.println(sep.toString());
+        StringBuilder sepfooter = new StringBuilder();
+        for (int c = 0; c < headers.length; c++) {
+            sepfooter.append("═".repeat(widths[c]));
+            if (c < headers.length - 1) sepfooter.append("═╩═");
+        }
+        
+        System.out.println(sepfooter.toString());
     }
 
     public void remove(String PerKods) {
