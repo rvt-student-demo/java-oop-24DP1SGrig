@@ -1,16 +1,13 @@
 package rvt;
 
-import java.util.Scanner;
-
-import StudentuRegistracija.CLI;
-import StudentuRegistracija.FileHandler;
-
 public class App {
     public static void main(String[] args) {
-        FileHandler file = new FileHandler();
-        Scanner scanner = new Scanner(System.in);
-        CLI cli = new CLI(file, scanner);
-        cli.start();
-        
+        IOU mattsIOU = new IOU();
+        mattsIOU.setSum("Arthur", 51.5);
+        mattsIOU.setSum("Michael", 30);
+
+        System.out.println(mattsIOU.howMuchDoIOweTo("Arthur"));
+        System.out.println(mattsIOU.howMuchDoIOweTo("Michael"));
     }
+    
 }
