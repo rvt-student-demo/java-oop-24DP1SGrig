@@ -6,7 +6,6 @@ public class IOU {
     HashMap<String, Double> map = new HashMap<>();
 
     public IOU() {
-
     }
 
     public void setSum(String toWhom, double amount) {
