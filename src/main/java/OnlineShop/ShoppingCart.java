@@ -11,24 +11,20 @@ public class ShoppingCart {
     }
 
     public void add(String product, int price) {
-        if (this.items.containsKey(product)) {
-            this.items.get(product).increaseQuantity();
-        } else {
-            this.items.put(product, new Item(product, 1, price));
-        }
+        this.items.compute(product, (name, item) -> {
+            if (item == null) {
+                return new Item(product, 1, price);
+            }
+            item.increaseQuantity();
+            return item;
+        });
     }
 
     public int price() {
-        int totalPrice = 0;
-        for (Item item : this.items.values()) {
-            totalPrice += item.price();
-        }
-        return totalPrice;
+        return this.items.values().stream().mapToInt(item -> item.price()).sum();
     }
 
     public void print() {
-        for (Item item : this.items.values()) {
-            System.out.println(item);
-        }
+        this.items.values().forEach(item -> System.out.println(item));
     }
 }

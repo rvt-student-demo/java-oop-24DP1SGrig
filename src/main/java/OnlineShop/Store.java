@@ -17,9 +17,7 @@ public class Store {
         System.out.println("Welcome to the store " + customer);
         System.out.println("our selection:");
 
-        for (String product : this.warehouse.products()) {
-            System.out.println(product);
-        }
+        this.warehouse.products().forEach(product -> System.out.println(product));
 
         while (true) {
             System.out.print("What to put in the cart (press enter to go to the register): ");
