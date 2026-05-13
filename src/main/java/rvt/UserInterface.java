@@ -5,12 +5,11 @@ import java.util.Scanner;
 public class UserInterface {
     
     String user_input;
-    TodoList todo;
+    TodoList todo = new TodoList();
     Scanner scanner;
     Boolean program_status = true;
 
-    public UserInterface(TodoList list, Scanner scanner) {
-        this.todo = list;
+    public UserInterface(Scanner scanner) {
         this.scanner = scanner;
     }
     public void start() {
@@ -18,22 +17,19 @@ public class UserInterface {
             System.out.printf("Command: ");
             try {
             switch (this.user_input = scanner.nextLine().toLowerCase().trim()) {
-                case "add":
+                case "add" -> {
                     System.out.printf("To add: ");
                     todo.add(this.user_input = scanner.nextLine());
-                    break;
-                case "remove":
+                    }
+                case "remove" -> {
                     System.out.printf("Which one is removed? ");
                     todo.remove(Integer.parseInt(this.user_input = scanner.nextLine()));
-                    break;
-                case "stop":
-                    this.program_status = false;
-                    break;
-                case "list":
-                    todo.print();
+                    }
+                case "stop" -> this.program_status = false;
+                case "list" -> todo.print();
             }
-        } catch(Exception e) {
-            System.out.println("ERROR! Try again.");
+        } catch(NumberFormatException e) {
+            System.out.println("ERROR! Try again." + e);
         }
         }
     }

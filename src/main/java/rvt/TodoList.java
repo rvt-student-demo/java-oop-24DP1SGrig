@@ -1,61 +1,40 @@
 package rvt;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class TodoList {
-    ArrayList<String> list;
     Scanner reader;
-    private final String filePath = "data/todo.csv";
-
+    TodoDB db;
+    private ArrayList<Integer> lastIds;
     public TodoList() {
-        list = new ArrayList<>();
-        try {
-            this.reader = new Scanner(new File(this.filePath));
-            if (reader.hasNext()) {
-                String[] tasks = reader.nextLine().split(",");
-                list.addAll(Arrays.asList(tasks));
-                reader.close();
-            }
-        }
-        catch (IOException e) {
-            System.out.println(e + "WTF");
-        }
+        this.db = new TodoDB();
+        this.lastIds = new ArrayList<>();
     }
     
     public void add(String task) {
-        list.add(task);
-        try (FileWriter writer = new FileWriter(this.filePath, true)) {
-            writer.write(task + ",");
-            writer.flush();
-            writer.close();
-        }
-        catch (IOException e) {
-            System.out.println("abobus " + e);
-        }
+        db.addRow(task);
     }
 
     public void print() {
-        for (int index = 0; index < list.size(); index++) {
-            System.out.printf("%d: %s\n", index + 1, list.get(index));
+        ArrayList<String> rows = db.getData();
+        lastIds.clear();
+        for (int i = 0; i < rows.size(); i++) {
+            String row = rows.get(i);
+            String[] parts = row.split(",", 2);
+            int id = Integer.parseInt(parts[0]);
+            String task = parts.length > 1 ? parts[1] : "";
+            lastIds.add(id);
+            System.out.printf("%d %s\n", i + 1, task);
         }
     }
 
     public void remove(int number) {
-        list.remove(number - 1);
-        try (FileWriter writer = new FileWriter(this.filePath)) {
-            if (!list.isEmpty()) {
-                writer.write(String.join(",", list));
-                writer.write(",");
-            }
-            writer.flush();
-        } catch (IOException e) {
-            System.out.println("abobus " + e);
+        if (number <= 0 || number > lastIds.size()) {
+            throw new IllegalArgumentException("Invalid task number: " + number);
         }
+        int dbId = lastIds.get(number - 1);
+        db.deleteRow(dbId);
     }
     
 }
